@@ -1,0 +1,660 @@
+%% 
+%% Authors:  
+%% Nils Barrellon (nils.barrellon1@etu.sorbonne-universite.fr)
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Type et package
+
+\documentclass[a4paper,12pt]{article}
+\usepackage[french,english]{babel}
+\usepackage{fancyhdr}
+\usepackage[utf8]{inputenc}
+\usepackage{cmbright}
+\usepackage{epsfig}
+\usepackage{calc}
+\usepackage{url}
+\usepackage{boxedminipage}
+\usepackage{graphicx}
+\usepackage[T1]{fontenc}
+\usepackage{hyperref}
+\usepackage{csquotes}         % Gère les guillemets
+\usepackage[backend=biber,style=numeric]{biblatex} % Pour la bibliographie
+\usepackage{float}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{tikz}
+\usetikzlibrary{matrix}
+\usepackage{enumitem}
+\usepackage{amsmath}
+\usetikzlibrary{arrows.meta}
+\usetikzlibrary{graphs, graphs.standard, quotes}
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Définitions à personnaliser 
+
+\def\nomEtudA{Nils Barrellon 21401602}
+
+\def\titreProjetLong{MOGPL : La balade du robot}
+
+\def\typeDoc{Rapport final}
+ 
+%% - Reglage pour le code inséré
+
+
+\lstset{
+  language=Python,
+  basicstyle=\ttfamily\scriptsize,
+  keywordstyle=\color{blue}\bfseries,
+  commentstyle=\color{gray},
+  stringstyle=\color{red},
+  numbers=left,
+  numberstyle=\tiny\color{gray},
+  stepnumber=1,
+  numbersep=5pt,
+  tabsize=4,
+  showspaces=false,
+  showstringspaces=false,
+  breaklines=true,
+  frame=single,
+}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Définitions à ne pas modifier
+ 
+%%%%% ||| Mise en page verticale ||| 
+\setlength{\voffset}{-1in} % a4:reste 297mm pour les 5 suivants:
+\setlength{\topmargin}{15mm}         % avant l'en-tête
+\setlength{\headheight}{20mm}        % hauteur de l'en-tête 
+\setlength{\headsep}{10mm}            % entre l'en-tête et le corps
+\setlength{\textheight}{220mm}       % hauteur du corps
+\setlength{\footskip}{12mm}          % pied de page par rapport au corps 
+
+%%%%% --- Mise en page horizontale ---
+\setlength{\hoffset}{-1in} % a4:reste 210mm 
+\setlength{\oddsidemargin}{15mm}     % entre hoffset et le corps
+\setlength{\evensidemargin}{15mm}    % entre hoffset et le corps
+\setlength{\marginparwidth}{0mm}     % largeur de la marge
+\setlength{\marginparsep}{0mm}       % séparateur corps marge
+\setlength{\textwidth}{170mm}        % largeur du corps
+
+\def\annee{2025-26}
+\setlength{\parindent}{0cm} 
+\renewcommand{\familydefault}{\sfdefault}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Début du document
+
+\begin{document}
+%\sffamily
+\selectlanguage{french}
+\setcounter{page}{1} % Réinitialisation des numéros de page
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Définition des en-têtes et pied de pages
+\pagestyle{fancyplain}
+\lhead[\fancyplain{}{Master Informatique\\ UE \textbf{RITAL} fév. \annee \\}]
+      {\fancyplain{}{Master Informatique\\ UE \textbf{RITAL} \annee}}
+\rhead
+      {\fancyplain{}{\nomEtudA}}
+\lfoot[\fancyplain{}{\includegraphics[width=3cm]{LOGO_SCIENCES_DEF_CMJN_med.jpg}}]
+      {\fancyplain{}{\includegraphics[width=3cm]{LOGO_SCIENCES_DEF_CMJN_med.jpg}}}
+\cfoot[\fancyplain{}{\textbf{\thepage}}]
+      {\fancyplain{}{\textbf{\thepage}}}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+~
+
+      \begin{center}
+        \begin{boxedminipage}{12cm}{
+            \begin{center}
+              ~\\\LARGE\textbf{\titreProjetLong}\\
+              ~\\\large Etudiant: \textbf{\nomEtudA}\\
+              ~
+            \end{center}
+            }
+        \end{boxedminipage}
+      \end{center}
+
+~
+
+\vspace{2cm}
+
+\begin{center}
+\href{https://github.com/nbarrellon/RITAL2026}{Github associé : https://github.com/nbarrellon/RITAL2026}
+\end{center}
+\vspace{2cm}
+
+\begin{tabular}{ccc}
+        
+        \includegraphics[width=0.3\textwidth]{grilleexemple.png} &
+        \includegraphics[width=0.3\textwidth]{grilleexemple2.png} &
+        \includegraphics[width=0.3\textwidth]{grilleexemple3.png}\\
+        
+    \end{tabular}
+
+\newpage
+
+\section*{a. Formulation du problème}
+
+En première lecture, on se dit que, le robot passant d'une intersection de rail à une intersection de rail, le problème peut aisément se modéliser à l'aide d'un graphe où les sommets sont les coordonnées des intersections. On imagine supprimer du graphe les sommets qui sont interdits par la présence d'obstacle. Mais c'est oublier que le robot peut tourner quand il est sur une intersection et que cette opération est de valeur 1 (tout comme un déplacement). Il convient donc de créer, pour des mêmes coordonnées, autant de sommets qu'il y a d'orientation possibles pour le robot. Ainsi, passer d'une orientation à une autre (c'est à dire tourner) revient à passer d'un sommet à un autre.\\
+
+J'ai donc opté pour l'implémentation suivante :
+\begin{itemize}
+\item la grille est modélisée par un graphe orienté G(V,E) ;
+\item chaque sommet V est un état du robot caractérisé par des coordonnées sur la grille \underline{qui lui sont accessibles} et une orientation (Nord,Sud,Est,Ouest) ;
+\item Un arc traduit la possibilité pour le robot de passer d'une intersection à une autre (AVANCE) ou de tourner sur lui-même (TOURNE).
+\end{itemize}
+
+Soit la grille $2\times3$ suivante :\\
+ \begin{figure}[H]
+ \begin{center}
+  \begin{tikzpicture}
+        \matrix (m) [matrix of nodes,
+                    nodes={draw, minimum size=1cm, anchor=center},
+                    row sep=-\pgflinewidth,
+                    column sep=-\pgflinewidth]
+        {
+            (0,0) & (0,1) & (0,2) \\
+            (1,0) & (1,1) & (1,2) \\
+        };
+
+        % Colorier la case (0,0) en noir
+        \fill[black] (m-2-2.north west) rectangle (m-2-2.south east);
+        \node[text=white] at (m-2-2) {(1,1)};
+
+   % Axes x et y dépassant du rectangle
+\draw[->] (m-1-1.north west) -- (m-2-1.south west) -- ([yshift=-0.5cm]m-2-1.south west) node[below] {x};
+\draw[->] (m-1-1.north west) -- (m-1-3.north east) -- ([xshift=0.5cm]m-1-3.north east) node[right] {y};
+
+
+        % Numérotation des intersections avec les axes (manuelle)
+        \node[left] at (m-1-1.north west) {0};
+        \node[left] at (m-2-1.north west) {1};
+        \node[left] at (m-2-1.south west) {2};
+        \node[above] at (m-1-1.north west) {0};
+        \node[above] at (m-1-2.north west) {1};
+        \node[above] at (m-1-3.north west) {2};
+        \node[above] at (m-1-3.north east) {3};
+    \end{tikzpicture}
+ \end{center}
+
+ \end{figure}
+
+Les sommets (1,1), (1,2), (2,1) et (2,2) ne doivent pas figurer dans le graphe car le robot n'y a pas accès.\\
+
+J'ai choisi d'implémenter les orientations du robot dans la grille de la façon suivante :\\
+\begin{center}
+\begin{tikzpicture}
+    % Dessiner le cercle
+    \draw (0,0) circle (1.5cm);
+
+    % Dessiner la croix perpendiculaire
+    \draw[thick] (-2,0) -- (2,0); % Ligne horizontale
+    \draw[thick] (0,-2) -- (0,2); % Ligne verticale
+
+    % Ajouter les orientations de la rose des vents
+    \node at (0, 2.5) {Nord (0)};
+    \node at (3, 0) {Est (1)};
+    \node at (0, -2.5) {Sud (2)};
+    \node at (-3, 0) {Ouest (3)};
+\end{tikzpicture}
+\end{center}
+
+Ainsi, le graphe associé est le suivant où les arcs AVANCE sont en rouge et les arcs TOURNE en bleu:\\
+
+
+\begin{tikzpicture}[every node/.style={draw, circle, inner sep=2pt, font=\tiny}]
+    \node (0-0-0) at (4,0) {(0,0,0)};
+  \node (0-0-1) at (2,0) {(0,0,1)};
+  \node (0-0-2) at (2,-2) {(0,0,2)};
+  \node (0-0-3) at (4,-2) {(0,0,3)};
+  \node (0-1-0) at (8,0) {(0,1,0)};
+  \node (0-1-1) at (6,0) {(0,1,1)};
+  \node (0-1-2) at (6,-2) {(0,1,2)};
+  \node (0-1-3) at (8,-2) {(0,1,3)};
+
+  \node (0-2-0) at (12,0) {(0,2,0)};
+  \node (0-2-1) at (10,0) {(0,2,1)};
+  \node (0-2-2) at (10,-2) {(0,2,2)};
+  \node (0-2-3) at (12,-2) {(0,2,3)};
+
+  \node (0-3-0) at (16,0) {(0,3,0)};
+  \node (0-3-1) at (14,0) {(0,3,1)};
+  \node (0-3-2) at (14,-2) {(0,3,2)};
+  \node (0-3-3) at (16,-2) {(0,3,3)};
+
+  \node (1-0-0) at (4,-4) {(1,0,0)};
+  \node (1-0-1) at (2,-4) {(1,0,1)};
+  \node (1-0-2) at (2,-6) {(1,0,2)};
+  \node (1-0-3) at (4,-6) {(1,0,3)};
+
+  \node (1-3-0) at (16,-4) {(1,3,0)};
+  \node (1-3-1) at (14,-4) {(1,3,1)};
+  \node (1-3-2) at (14,-6) {(1,3,2)};
+  \node (1-3-3) at (16,-6) {(1,3,3)};
+  \node (2-0-0) at (4,-8) {(2,0,0)};
+  \node (2-0-1) at (2,-8) {(2,0,1)};
+  \node (2-0-2) at (2,-10) {(2,0,2)};
+  \node (2-0-3) at (4,-10) {(2,0,3)};
+  \node (2-3-0) at (16,-8) {(2,3,0)};
+  \node (2-3-1) at (14,-8) {(2,3,1)};
+  \node (2-3-2) at (14,-10) {(2,3,2)};
+  \node (2-3-3) at (16,-10) {(2,3,3)};
+
+  % Arcs pour chaque groupe (x,y,z)
+  \draw[<->] (0-0-0) -- (0-0-1);
+  \draw[<->] (0-0-3) -- (0-0-0);
+  \draw[<->] (0-0-2) -- (0-0-1);
+  \draw[<->] (0-0-2) -- (0-0-3);
+
+  \draw[<->] (0-3-0) -- (0-3-1);
+  \draw[<->] (0-3-3) -- (0-3-0);
+  \draw[<->] (0-3-2) -- (0-3-1);
+  \draw[<->] (0-3-2) -- (0-3-3);
+
+  \draw[<->] (1-0-0) -- (1-0-1);
+  \draw[<->] (1-0-3) -- (1-0-0);
+  \draw[<->] (1-0-2) -- (1-0-1);
+  \draw[<->] (1-0-2) -- (1-0-3);
+
+  \draw[<->] (1-3-0) -- (1-3-1);
+  \draw[<->] (1-3-3) -- (1-3-0);
+  \draw[<->] (1-3-2) -- (1-3-1);
+  \draw[<->] (1-3-2) -- (1-3-3);
+
+  \draw[<->] (2-0-0) -- (2-0-1);
+  \draw[<->] (2-0-3) -- (2-0-0);
+  \draw[<->] (2-0-2) -- (2-0-1);
+  \draw[<->] (2-0-2) -- (2-0-3);
+
+  \draw[<->] (2-3-0) -- (2-3-1);
+  \draw[<->] (2-3-3) -- (2-3-0);
+  \draw[<->] (2-3-2) -- (2-3-1);
+  \draw[<->] (2-3-2) -- (2-3-3);
+  
+  \draw[<->] (0-1-2) -- (0-1-3);
+  \draw[<->] (0-1-3) -- (0-1-0);
+  \draw[<->] (0-1-0) -- (0-1-1);
+  \draw[<->] (0-1-1) -- (0-1-2);
+  
+  \draw[<->] (0-2-2) -- (0-2-3);
+  \draw[<->] (0-2-3) -- (0-2-0);
+  \draw[<->] (0-2-0) -- (0-2-1);
+  \draw[<->] (0-2-1) -- (0-2-2);
+  
+% Arcs pour chaque groupe (x,y,z) en bleu
+  \draw[<->, blue] (0-0-0) -- (0-0-1);
+  \draw[<->, blue] (0-0-3) -- (0-0-0);
+  \draw[<->, blue] (0-0-2) -- (0-0-1);
+  \draw[<->, blue] (0-0-2) -- (0-0-3);
+  \draw[<->, blue] (0-3-0) -- (0-3-1);
+  \draw[<->, blue] (0-3-3) -- (0-3-0);
+  \draw[<->, blue] (0-3-2) -- (0-3-1);
+  \draw[<->, blue] (0-3-2) -- (0-3-3);
+  \draw[<->, blue] (1-0-0) -- (1-0-1);
+  \draw[<->, blue] (1-0-3) -- (1-0-0);
+  \draw[<->, blue] (1-0-2) -- (1-0-1);
+  \draw[<->, blue] (1-0-2) -- (1-0-3);
+  \draw[<->, blue] (1-3-0) -- (1-3-1);
+  \draw[<->, blue] (1-3-3) -- (1-3-0);
+  \draw[<->, blue] (1-3-2) -- (1-3-1);
+  \draw[<->, blue] (1-3-2) -- (1-3-3);
+  \draw[<->, blue] (2-0-0) -- (2-0-1);
+  \draw[<->, blue] (2-0-3) -- (2-0-0);
+  \draw[<->, blue] (2-0-2) -- (2-0-1);
+  \draw[<->, blue] (2-0-2) -- (2-0-3);
+  \draw[<->, blue] (2-3-0) -- (2-3-1);
+  \draw[<->, blue] (2-3-3) -- (2-3-0);
+  \draw[<->, blue] (2-3-2) -- (2-3-1);
+  \draw[<->, blue] (2-3-2) -- (2-3-3);
+
+  \draw[<->, blue] (0-1-2) -- (0-1-3);
+  \draw[<->, blue] (0-1-3) -- (0-1-0);
+  \draw[<->, blue] (0-1-0) -- (0-1-1);
+  \draw[<->, blue] (0-1-1) -- (0-1-2);
+
+  \draw[<->, blue] (0-2-2) -- (0-2-3);
+  \draw[<->, blue] (0-2-3) -- (0-2-0);
+  \draw[<->, blue] (0-2-0) -- (0-2-1);
+  \draw[<->, blue] (0-2-1) -- (0-2-2);
+
+  % Arcs avancés courbés en rouge
+  \draw[->, red, bend right] (0-0-2) to (1-0-2);
+  \draw[->, red, bend right] (0-0-2) to (2-0-2);
+  \draw[->, red, bend right] (1-0-2) to (2-0-2);
+  \draw[->, red, bend left] (2-0-0) to (1-0-0);
+  \draw[->, red, bend left] (2-0-0) to (0-0-0);
+  \draw[->, red, bend left] (1-0-0) to (0-0-0);
+  \draw[->, red, bend right] (0-3-2) to (1-3-2);
+  \draw[->, red, bend right] (0-3-2) to (2-3-2);
+  \draw[->, red, bend right] (1-3-2) to (2-3-2);
+  \draw[->, red, bend left] (2-3-0) to (1-3-0);
+  \draw[->, red, bend left] (2-3-0) to (0-3-0);
+  \draw[->, red, bend left] (1-3-0) to (0-3-0);
+  \draw[->, red, bend left] (0-0-1) to (0-1-1);
+  \draw[->, red, bend left] (0-0-1) to (0-2-1);
+  \draw[->, red, bend left] (0-0-1) to (0-3-1);
+  \draw[->, red, bend left] (0-1-1) to (0-2-1);
+  \draw[->, red, bend left] (0-1-1) to (0-3-1);
+  \draw[->, red, bend left] (0-2-1) to (0-3-1);
+  \draw[->, red, bend left] (0-3-3) to (0-2-3);
+  \draw[->, red, bend left] (0-3-3) to (0-1-3);
+  \draw[->, red, bend left] (0-3-3) to (0-0-3);
+  \draw[->, red, bend left] (0-2-3) to (0-1-3);
+  \draw[->, red, bend left] (0-2-3) to (0-0-3);
+  \draw[->, red, bend left] (0-1-3) to (0-0-3);
+  
+\end{tikzpicture}
+\newpage
+On ontient ainsi un graphe d'étude G(V,E) :
+\begin{itemize}
+\item chaque intersection de rail génère 4 sommets (correspondant aux 4 orientations possibles) d'où  $|V| \leq 4 \times (NM-4 \times P)$ où $P$ est le nombre d'obstacle (1 obstacle supprime 4 sommets).
+\item chaque état possède au mieux 4 arcs (pour "tourner" d'une orientation à l'autre) et 3 arcs (pour avancer si possible vers un autre sommet) soir $|E| \leq 7(NM-4 \times P)$.
+\end{itemize}
+On constate donc que la taille du graphe est en $N^2$.
+
+
+\section*{b. Complexité de l'algorithme}
+
+Le plus court chemin dans un graphe orienté non pondéré (comme c'est ici notre cas puisque chaque opération coûte 1) peut être trouvé à l'aide d'un \textbf{parcours en largeur} (ou BFS). C'est celui que j'ai décidé d'utiliser. Sa complexité dans le pire cas est en $\mathcal{O}(n+m)$ où $n$ est le nombre de sommet du graphe $n=|V|$ et $m$ le nombre d'arête $m=|E|$.
+
+\section*{c. Temps de calcul en fonction de la taille de la grille}
+
+En théorie, la complexité dans le pire des cas de mon algorithme est en $\mathcal{O}(|V|+|E|)$. Toutefois, nous avons montré que l'ordre du graphe et le nombre d'arête varient en $N^2$ ainsi, je m'attends à une complexité du parcours en $\mathcal{O}(N^2)$.\\
+
+Les résultats expérimentaux obtenus pour des matrices carrées ($N \leq 60$) sont présentées figures \ref{pcte2} et \ref{pcte3}. \\
+
+Pour chaque $N \in \{10,70\}$,  20 instances de graphes sont générées avec $P$ obstacles ($P=N$) pour obtenir un temps d'exécution moyen de l'algorithme BFS. J'ai choisi de positionner pour chacun des tests le départ en (0,0) et l'arrivée en (N,N) car, en tirant au hasard ces positions extrêmes on peut obtenir des parcours très courts (départ très voisin d'arrivée) et donc un temps d'exécution non représentatif. Malgré tout, des mesures surprenantes apparaissent (voir figure \ref{pcte2} pour N = 60). \\
+
+\begin{figure}[H]
+\begin{center}
+\includegraphics[scale=0.5]{instanceXXX_log.png}
+\caption{Temps d'éxécution en fonction de la taille de la grille pour un nombre d'obstacle constant.}
+\label{pcte2}
+\end{center}
+\end{figure}
+
+\begin{figure}[H]
+\begin{center}
+\includegraphics[scale=0.5]{instanceXXX_log1.png}
+\caption{Temps d'éxécution en fonction de la taille de la grille pour un nombre d'obstacle constant.}
+\label{pcte3}
+\end{center}
+\end{figure}
+
+La courbe $t=f(N)$ a l'allure d'une courbe polynomiale de forme générale \textbf{$t=f(n)=n^\alpha$}. Pour déterminer le degré du polynome, je trace la courbe $log(t)=g(log(n))$. En effet, si $f(n)=n^\alpha$ alors $log(t)=log(n^\alpha)=\alpha \times log(n)$. \\
+Si l'hypothèse est correcte alors cette courbe est une droite dont le coefficient directeur vaut $\alpha$.\\
+L'hypothèse est vérifiée expérimentalement puis que j'obtiens, après régression linéaire, $\alpha \approx 2$ soit une complexité temporelle dans le pire des cas \fbox{$\mathcal{O}(n^{2})$} conforme à ce que attendu. \\
+
+\underline{Remarque:} Cette complexité aurait pu peut-être être légèrement améliorée en supprimant les sommets inutiles. En effet, sur les bords de la grille, la création des sommets correspondant à une orientation pointant hors de la grille sont inutiles.
+
+
+\section*{d. Temps de calcul en fonction du nombre d'obstacle}
+
+La complexité en fonction du nombre d'obstacle $P$ devrait tendre vers une complexité linéaire conforme à celle du BFS. En effet, plus le nombre d'obstacle augmente, plus l'ordre du graphe et sa densité diminue. Nous avons montré que $|V| \leq 4 \times (NM-4 \times P) = 4(N^2-4P)$ soit $\lim_{P \to N^2} |V| = 0 $ pour une complexité qui devient alors constante.\\
+
+
+\begin{figure}[h!]
+    \centering
+    \includegraphics[scale=0.5]{instance_taille_grille_cte1.png}
+    \caption{Temps d'exécution en fonction du nombre d'obstacles si la taille de la grille est constante.}
+    \label{ffonctionP}
+\end{figure}
+
+\begin{figure}[h!]
+    \centering
+    \includegraphics[scale=0.5]{instance_taille_grille_cte.png}
+    \caption{Temps d'exécution en fonction du nombre d'obstacles si la taille de la grille est constante.}
+    \label{ffonctionP2}
+\end{figure}
+
+La figure \ref{ffonctionP} montre comment le temps de calcul de l'algorithme tend vers 0 quand P augmente pour une grille de taille fixe. On notera que cette limite semble atteinte pour $P=100$ ce qui paraît correct puisque nous avons dit que P obstacles supprimaient $4P$ sommets dans le graphe. Or, notre grille étant de taille 20 par 20, elle comprend au maximum 400 sommets. \\
+
+
+Pour un nombre d'obstacles variant de 10 à 50 dans une grille de taille 20 par 20. Les résultats expérimentaux de la figure \ref{ffonctionP2} font bien apparaître une complexité linéaire.
+
+\section*{e. Positionnement des obstacles}
+
+On souhaite écrire le programme linéaire qui va choisir $P$ cases-obstacles dans une grille de taille $N \times M$ dont chaque case est pondérée par un entier tiré aléatoirement entre 1 et 1000. La somme des cases choisies doit être minimale et les contraintes suivantes doivent être respectées :
+\begin{itemize}
+\item il n'y ait pas plus de $\frac{2P}{M}$ obstacles par ligne $\rightarrow$ jeu de contraintes \textcircled{1};
+\item il n'y ait pas plus de $\frac{2P}{N}$ obstacles par colonne $\rightarrow$ jeu de contraintes \textcircled{2};
+\item il n'y ait aucune configuration de type "obstacle-cas vide-obstacle" sur les lignes $\rightarrow$ jeu de contraintes \textcircled{3};
+\item il n'y ait aucune configuration de type "obstacle-cas vide-obstacle" sur les colonnes $\rightarrow$ jeu de contraintes \textcircled{4};
+\item il y ait $P$ obstacles dans la grille $\rightarrow$ jeu de contraintes \textcircled{5};
+\end{itemize}
+
+\subsection*{1) Variables de décision :}
+
+J'ai décidé de choisir comme variables de décision, $x_{ij}, i \in [1,2...,N]$ et $j \in [1,2...,M]$ en attribuant donc une variable par case. Ces variables $x_{ij}$ sont \textbf{binaires} : 0 la case n'est pas retenue, 1 elle est choisie.
+
+\subsection*{2) Fonction objectif}
+
+On souhaite minimiser la somme des coefficients de pondération des cases choisies. Ainsi, la fonction objectif $z$ s'écrit :\\
+
+\[
+\min z = \sum_{i=1}^{N} \sum_{j=1}^{M} x_{i,j}
+\]
+\newpage
+\subsection*{3) Contraintes}
+\begin{enumerate}[label=\textcircled{\arabic*}]
+\item $\forall i \in \{1, \dots, N\}$ on veut $\sum_{j=1}^{M} x_{ij} \leq \frac{2P}{M}$
+\item $\forall j \in \{1, \dots, M\}$ on veut $\sum_{i=1}^{N} x_{ij} \leq \frac{2P}{N}$
+\item $\forall i \in \{1, \dots, N\}$, $\forall j \in \{1, \dots, M-2\}$ on veut $x_{i,j}+x_{i,j+2} \leq 1$ qui assure que deux cases entourant une case vide dans une ligne ne peuvent pas être choisies simultanément
+\item $\forall j \in \{1, \dots, M\}$, $\forall i \in \{1, \dots, N-2\}$ on veut $x_{i,j}+x_{i+2,j} \leq 1$ qui assure que deux cases entourant une case vide dans une colonne ne peuvent pas être choisies simultanément
+\item $\sum_{i=1}^{N} \sum_{j=1}^{M} x_{i,j} = P$ 
+\end{enumerate}
+
+\subsection*{4) Exemple}
+
+Soit la grille de $4 \times 4$ de la figure \ref{grillepondérée}.
+
+\begin{figure}[H]
+ \begin{center}
+  \begin{tikzpicture}
+        \matrix (m) [matrix of nodes,
+                    nodes={draw, minimum size=1cm, anchor=center},
+                    row sep=-\pgflinewidth,
+                    column sep=-\pgflinewidth]
+        {
+            132 & 12 & 34 & 789\\
+            202 & 345 & 70 & 707\\
+            11 & 236 & 657 & 90\\
+            178 & 801 & 900 & 654\\
+        };
+
+    \end{tikzpicture}
+ \end{center}
+\caption{Grille de jeu avec pondération}
+\label{grillepondérée}
+ \end{figure}
+
+Les variables de décision associées sont :
+
+\begin{figure}[H]
+ \begin{center}
+  \begin{tikzpicture}
+        \matrix (m) [matrix of nodes,
+                    nodes={draw, minimum size=1cm, anchor=center},
+                    row sep=-\pgflinewidth,
+                    column sep=-\pgflinewidth]
+        {
+            $x_{11}$ & $x_{12}$ & $x_{13}$ & $x_{14}$\\
+            $x_{21}$ & $x_{22}$ & $x_{23}$ & $x_{24}$\\
+            $x_{31}$ & $x_{32}$ & $x_{33}$ & $x_{34}$\\
+            $x_{41}$ & $x_{42}$ & $x_{43}$ & $x_{44}$\\
+        };
+
+    \end{tikzpicture}
+ \end{center}
+\caption{Variables de décision}
+\label{grillevariables}
+ \end{figure}
+ 
+Si on souhaite placer $P=5$ obstacles dans cette grille, les contraintes s'écrivent :\\
+\underline{$N=4$ contraintes \textcircled{1}}
+\[
+\left\{
+\begin{aligned}
+x_{11} + x_{12} + x_{13} + x_{14} &\leq 2 \\
+x_{21} + x_{22} + x_{23} + x_{24} &\leq 2 \\
+x_{31} + x_{32} + x_{33} + x_{34} &\leq 2 \\
+x_{41} + x_{42} + x_{43} + x_{44} &\leq 2
+\end{aligned}
+\right.
+\]
+
+\underline{$M=4$ contraintes \textcircled{2}}
+\[
+\left\{
+\begin{aligned}
+x_{11} + x_{21} + x_{31} + x_{41} &\leq 2 \\
+x_{12} + x_{22} + x_{32} + x_{42} &\leq 2 \\
+x_{13} + x_{23} + x_{33} + x_{43} &\leq 2 \\
+x_{14} + x_{24} + x_{34} + x_{44} &\leq 2
+\end{aligned}
+\right.
+\]
+
+\underline{$N \times (M-2)=8$ contraintes \textcircled{3}}
+\[
+\left\{
+\begin{aligned}
+x_{11} + x_{13} &\leq 1 \\
+x_{12} + x_{14} &\leq 1 \\
+x_{21} + x_{23}  &\leq 1 \\
+x_{22} + x_{24}  &\leq 1 \\
+x_{31} + x_{33}  &\leq 1 \\
+x_{32} + x_{34}  &\leq 1 \\
+x_{41} + x_{43}  &\leq 1 \\
+x_{42} + x_{44}  &\leq 1 \\
+\end{aligned}
+\right.
+\]
+
+\underline{$M \times (N-2)=8$ contraintes \textcircled{4}}
+
+\[
+\left\{
+\begin{aligned}
+x_{11} + x_{31} &\leq 1 \\
+x_{21} + x_{41} &\leq 1 \\
+x_{12} + x_{32}  &\leq 1 \\
+x_{22} + x_{42}  &\leq 1 \\
+x_{13} + x_{33}  &\leq 1 \\
+x_{33} + x_{43}  &\leq 1 \\
+x_{14} + x_{34}  &\leq 1 \\
+x_{24} + x_{44}  &\leq 1 \\
+\end{aligned}
+\right.
+\]
+\underline{1 contrainte \textcircled{5}}
+
+$x_{11} + x_{12} + x_{13} + x_{14} + x_{21} + x_{22} + x_{23} + x_{24} + x_{31} + x_{32} + x_{33} + x_{34} + x_{41} + x_{42} + x_{43} + x_{44} = 5$ \\
+
+Sachant que l'on travaille en minimisation (ajouter une sixième variable ne pourrait que dégrader la fonction objectif), je l'ai modifiée pour Gurobi par :\\
+
+$x_{11} + x_{12} + x_{13} + x_{14} + x_{21} + x_{22} + x_{23} + x_{24} + x_{31} + x_{32} + x_{33} + x_{34} + x_{41} + x_{42} + x_{43} + x_{44} \geq 5$\\
+
+puis multipliée par -1 pour avoir une homogénéité des signes d'inégalités (toujours pour Gurobi) : \\
+
+$-x_{11} - x_{12} - x_{13} - x_{14} - x_{21} - x_{22} - x_{23} - x_{24} - x_{31} - x_{32} - x_{33} - x_{34} - x_{41} - x_{42} - x_{43} - x_{44} \leq -5$\\
+
+\subsection*{5) Solution}
+Quelques boucles \texttt{for} permettent de construire aisément les listes des coefficients de chaque contrainte que l'on ajoute à la matrice des contraintes, idem pour les seconds membres et la fonction objectif. Tout ceci est traité par Gurobi en prenant soin d'"écraser" la matrice des variables et de lui préciser que ces dernières sont binaires (\texttt{vtype=GRB.BINARY}). Gurobi renvoie la solution :\\
+\begin{center}
+$x_{1} = 0 $,
+$x_{2} = 1 $,
+$x_{3} = 1 $,
+$x_{4} = 0$,
+$x_{5} = 0 $,
+$x_{6} = 0 $,
+$x_{7} = 1 $,
+$x_{8} = 0 $ \\
+$x_{9} = 1 $,
+$x_{10} = 0 $,
+$x_{11} = 0 $,
+$x_{12} = 1 $,
+$x_{13} = 0 $,
+$x_{14} = 0 $,
+$x_{15} = 0 $,
+$x_{16} = 0 $
+\end{center}
+
+
+
+Qui correspond à la grille de la figure \ref{solutiongurobi} de poids total $p=12+34+70+11+90=217$:
+\begin{figure}[H]
+ \begin{center}
+  \begin{tikzpicture}[scale=0.6]
+        \matrix (m) [matrix of nodes,
+                    nodes={draw, minimum size=1cm, anchor=center},
+                    row sep=-\pgflinewidth,
+                    column sep=-\pgflinewidth]
+        {
+            $0$ & $1$ & $1$ & $0$\\
+            $0$ & $0$ & $1$ & $0$\\
+            $1$ & $0$ & $0$ & $1$\\
+            $0$ & $0$ & $0$ & $0$\\
+        };
+
+    \end{tikzpicture}
+ \end{center}
+\caption{Solution du problème}
+\label{solutiongurobi}
+ \end{figure}
+ 
+ \subsection*{6) Remarques}
+Les contraintes imposées génèrent une contrainte sur le nombre maximal d'obstacle que l'on peut placer dans une grille de taille $N \times M$. \\
+Ainsi, le solveur annonce "\texttt{Model is infeasible}" pour certaines configurations (N,M,P). 
+
+Une de ces contraintes est aisément exprimable : on ne peut pas doit avoir plus de $\frac{2P}{M}$ obstacles sur une ligne ainsi il faut que $\frac{2P}{M} \leq M \Leftrightarrow P \leq \frac{M^2}{2}$. Par le même raisonnement sur les colonnes, on a  $P \leq \frac{N^2}{2}$. Ainsi, on trouve une condition sur $P$ : $P \leq \frac{NM}{2}$\\
+J'ai intégré cette condition dans le programme Python, en restreignant les choix possibles de l'utilisateur à $N$ inférieur à 50\% du nombre de cases de la grille. Cela fonctionne très bien pour les matrices carrées. \\
+Néanmoins, la contrainte du "101" fait chuter cette borne supérieure dans le cas des grilles rectangulaires. Hélas, je n'ai pas réussi à expliciter cette limite.\\
+Expérimentalement, Gurobi annonce que le problème est infaisable pour une grille de taille $7 \times 4$ à partir de 5 obstacles(on voit sur la figure \ref{gurobisouci} que l'ajout d'un cinquième obstacle dans la grille n'est pas possible sans violer une contrainte sachant qu'on ne peut pas mettre plus de $\frac{2*4}{4}=2$ obstacle sur une ligne et $\frac{2*4}{7} \approx 1$ sur une colonne), à partir de 15 obstacles pour une grille de $15 \times 8$.\\
+
+\begin{figure}[H]
+ \begin{center}
+  \begin{tikzpicture}[scale=0.6]
+        \matrix (m) [matrix of nodes,
+                    nodes={draw, minimum size=1cm, anchor=center},
+                    row sep=-\pgflinewidth,
+                    column sep=-\pgflinewidth]
+        {
+            $0$ & $0$ & $1$ & $0$\\
+            $0$ & $1$ & $0$ & $0$\\
+            $0$ & $0$ & $0$ & $0$\\
+            $0$ & $0$ & $0$ & $1$\\
+            $0$ & $0$ & $0$ & $0$\\
+            $0$ & $0$ & $0$ & $0$\\
+            $1$ & $0$ & $0$ & $0$\\
+        };
+
+    \end{tikzpicture}
+ \end{center}
+\caption{Solution du problème}
+\label{gurobisouci}
+ \end{figure}
+
+J'ai donc récupéré le statut de la modélisation pour :
+\begin{itemize}
+\item s'il vaut \texttt{GRB.OPTIMAL}, j'affiche la grille et le chemin trouvé ;
+\item s'il vaut \texttt{GRB.INFEASIBLE}, j'affiche un message d'erreur demandant à l'utilisateur de diminuer le nombre d'obstacles dans la grille.
+\end{itemize}
+
+
+\end{document}
