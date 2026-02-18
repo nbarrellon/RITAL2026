@@ -1,0 +1,395 @@
+%% 
+%% Authors:  
+%% Nils Barrellon (nils.barrellon1@etu.sorbonne-universite.fr)
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Type et package
+
+\documentclass[a4paper,12pt]{article}
+\usepackage[french,english]{babel}
+\usepackage{fancyhdr}
+\usepackage[utf8]{inputenc}
+\usepackage{cmbright}
+\usepackage{epsfig}
+\usepackage{calc}
+\usepackage{url}
+\usepackage{boxedminipage}
+\usepackage{graphicx}
+\usepackage[T1]{fontenc}
+\usepackage{hyperref}
+\usepackage{csquotes}         % Gère les guillemets
+\usepackage[backend=biber,style=numeric]{biblatex} % Pour la bibliographie
+\usepackage{float}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{tikz}
+\usetikzlibrary{matrix}
+\usepackage{enumitem}
+\usepackage{amsmath}
+\usetikzlibrary{arrows.meta}
+\usetikzlibrary{graphs, graphs.standard, quotes}
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Définitions à personnaliser 
+
+\def\nomEtudA{Nils Barrellon 21401602}
+
+\def\titreProjetLong{RITAL : Chirac ou Mitterand ?}
+
+\def\typeDoc{Rapport final}
+ 
+%% - Reglage pour le code inséré
+
+\definecolor{codegray}{gray}{0.95}
+\lstset{
+inputencoding=utf8,
+  literate=
+    {é}{{\'e}}1 {è}{{\`e}}1 {ê}{{\^e}}1 {ë}{{\"e}}1
+    {É}{{\'E}}1 {È}{{\`E}}1 {Ê}{{\^E}}1
+    {à}{{\`a}}1 {â}{{\^a}}1 {ä}{{\"a}}1
+    {ù}{{\`u}}1 {û}{{\^u}}1 {ü}{{\"u}}1
+    {ô}{{\^o}}1 {ö}{{\"o}}1
+    {î}{{\^i}}1 {ï}{{\"i}}1
+    {ç}{{\c{c}}}1 {Ç}{{\c{C}}}1,
+  language=Python,
+  backgroundcolor=\color{codegray},
+  basicstyle=\ttfamily\small,
+  frame=single,
+  breaklines=true,
+  keywordstyle=\color{blue},
+  commentstyle=\color{gray},
+  stringstyle=\color{orange},
+  showstringspaces=false ,
+  tabsize=3
+}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Définitions à ne pas modifier
+ 
+%%%%% ||| Mise en page verticale ||| 
+\setlength{\voffset}{-1in} % a4:reste 297mm pour les 5 suivants:
+\setlength{\topmargin}{15mm}         % avant l'en-tête
+\setlength{\headheight}{20mm}        % hauteur de l'en-tête 
+\setlength{\headsep}{10mm}            % entre l'en-tête et le corps
+\setlength{\textheight}{220mm}       % hauteur du corps
+\setlength{\footskip}{12mm}          % pied de page par rapport au corps 
+
+%%%%% --- Mise en page horizontale ---
+\setlength{\hoffset}{-1in} % a4:reste 210mm 
+\setlength{\oddsidemargin}{15mm}     % entre hoffset et le corps
+\setlength{\evensidemargin}{15mm}    % entre hoffset et le corps
+\setlength{\marginparwidth}{0mm}     % largeur de la marge
+\setlength{\marginparsep}{0mm}       % séparateur corps marge
+\setlength{\textwidth}{170mm}        % largeur du corps
+
+\def\annee{2025-26}
+\setlength{\parindent}{0cm} 
+\renewcommand{\familydefault}{\sfdefault}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Début du document
+
+\begin{document}
+%\sffamily
+\selectlanguage{french}
+\setcounter{page}{1} % Réinitialisation des numéros de page
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Définition des en-têtes et pied de pages
+\pagestyle{fancyplain}
+\lhead[\fancyplain{}{Master Informatique\\ UE \textbf{RITAL} fév. \annee \\}]
+      {\fancyplain{}{Master Informatique\\ UE \textbf{RITAL} \annee}}
+\rhead
+      {\fancyplain{}{\nomEtudA}}
+\lfoot[\fancyplain{}{\includegraphics[width=3cm]{LOGO_SCIENCES_DEF_CMJN_med.jpg}}]
+      {\fancyplain{}{\includegraphics[width=3cm]{LOGO_SCIENCES_DEF_CMJN_med.jpg}}}
+\cfoot[\fancyplain{}{\textbf{\thepage}}]
+      {\fancyplain{}{\textbf{\thepage}}}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+~
+
+      \begin{center}
+        \begin{boxedminipage}{12cm}{
+            \begin{center}
+              ~\\\LARGE\textbf{\titreProjetLong}\\
+              ~\\\large Etudiant: \textbf{\nomEtudA}\\
+              ~
+            \end{center}
+            }
+        \end{boxedminipage}
+      \end{center}
+
+~
+
+\vspace{2cm}
+
+\begin{center}
+\href{https://github.com/nbarrellon/RITAL2026}{Github associé : https://github.com/nbarrellon/RITAL2026}
+\end{center}
+\vspace{1cm}
+
+\begin{center}
+\includegraphics[width=0.8\textwidth]{wordcloud.png} 
+\end{center}
+        
+        
+
+
+\newpage
+
+\section{Formulation du problème}
+
+Chirac ou Mitterrand : on dispose de la transcription d'un débat entre les deux présidents de la République, MM Chirac et Mitterrand. Chaque phrase prononcée par l'un ou l'autre est labellisée. On attribue le label M pour celles proposées par M.Mitterrand que l'on convertit en -1 et le label C (converti en 1) si c'est M.Chirac qui parle. 
+
+Les phrases labellisées de ce débat constitueront donc les données d'entraînement.
+
+L'objectif du projet est de pouvoir attribuer à son auteur une phrase quelconque prononcée dans un autre contexte.
+
+
+
+\section{Bag of words}
+
+On crée différents bag of words (bog) pour nos documents afin d'en tester la pertinence.
+
+\subsection{Pré-processing}
+
+On effectue en maont de la construction du bog un nettoyage du texte. Les options retenues sont :
+\begin{itemize}
+\item suppression de la ponctuation ;
+\item suppression des chiffres ;
+\item mise en minuscule ;
+
+\end{itemize} 
+
+Ce nettoyage est opéré par la fonction personnalisée de pré-processing suivante :
+
+\begin{lstlisting}
+import codecs
+import re 
+import string
+from unidecode import unidecode
+
+def preprocessPerso(text): 
+    #suppression de la ponctuation
+    punc = string.punctuation
+    punc += '\n\r\t'
+    text = text.translate(str.maketrans(punc, ' '*len(punc)))
+    #suppression des chiffres
+    text = re.sub(r"[0-9]","",text)
+    #suppression des accents
+    text = unidecode(text)
+    #mise en minuscule
+    return text.lower()
+\end{lstlisting}
+
+\subsection{Stopwords}
+On supprime les mots blancs avant construction du bog. La liste des stopwords est obtenue par concaténation des stopwords français donnés par la bibliothèque nltk auxquels on ajoute une liste personnelle, établie à partir de la liste des mots les plus présents et non-discriminants.
+
+\begin{lstlisting}
+# Mots blancs + mots les plus fréquents
+
+nltk.download('stopwords')
+from nltk.corpus import stopwords
+final_stopwords_list = stopwords.words('french')
+#mots les plus fréquents donc non-discriminants
+final_stopwords_list += ['ai','au','aujourd','aussi','autres','aux','avec','avez' ,'avons',
+ 'bien', 'ce' ,'cela', 'ces', 'cette' ,'ceux', 'chacun' ,'comme', 'dans' ,'date'
+ 'de', 'depuis', 'des' ,'deux' ,'dire' ,'doit' ,'dont' ,'du'
+ 'elle' ,'en' ,'encore', 'ensemble', 'entre', 'est' ,'et', 'etat', 'ete' ,'etre',
+ 'europe' ,'faire' ,'fait' ,'faut', 'francais' ,'france', 'hui' ,'ici', 'il' ,'ils',
+ 'je' ,'la', 'le' ,'les', 'leur' ,'leurs', 'mais', 'meme' ,'monde', 'monsieur' ,'ne',
+ 'nom', 'nos', 'notre', 'nous', 'on', 'ont' ,'ou', 'paix', 'par', 'pas', 'pays',
+ 'peut' ,'plus' ,'politique' ,'pour', 'president' ,'qu', 'que' ,'qui', 'sa', 'sans',
+ 'se' ,'ses' ,'si' ,'son' ,'sont', 'sur', 'temps', 'tous', 'tout', 'toute' ,'toutes',
+ 'tres', 'un' ,'une' ,'union', 'vie', 'vos' ,'votre', 'vous']
+\end{lstlisting}
+
+Cette liste a été obtenue à l'aide du script ci-dessous :
+\begin{lstlisting}
+from sklearn.feature_extraction.text import TfidfVectorizer
+
+use_idf=True
+smooth_idf=True
+sublinear_tf=False
+
+vectorizer = TfidfVectorizer(preprocessor=preprocessPerso,use_idf= use_idf, smooth_idf=smooth_idf, sublinear_tf=sublinear_tf,max_features=100)
+BOW1 = vectorizer.fit_transform(alltxts)
+vocabulaire = vectorizer.get_feature_names_out()
+\end{lstlisting} 
+
+\subsection{Premier bog}
+
+Bag of words simple. Taille du vocabulaire =  26894
+\begin{lstlisting}
+vectorizer = CountVectorizer(stop_words=final_stopwords_list,analyzer="word", preprocessor=preprocessPerso)
+BOW1 = vectorizer.fit_transform(alltxts)
+\end{lstlisting}
+
+
+\begin{center}
+\includegraphics[scale=0.5]{bow1.png}
+\end{center}
+\subsection{Deuxième bog}
+Utilisation de TF-IDF. Nombre de mots du vocabulaire: 2000
+\begin{lstlisting}
+use_idf=True
+smooth_idf=True
+sublinear_tf=False
+
+vectorizer = TfidfVectorizer(use_idf= use_idf, smooth_idf=smooth_idf,\
+sublinear_tf=sublinear_tf,                      preprocessor=preprocessPerso,stop_words=final_stopwords_list,max_features=2000)
+BOW2 = vectorizer.fit_transform(alltxts)
+
+\end{lstlisting}
+
+
+\begin{center}
+\includegraphics[scale=0.5]{bow2.png}
+\end{center}
+\subsection{Troisième bog}
+Utilisation des bigrammes. Taille du vocabulaire =  328573
+\begin{lstlisting}
+ngram_range = (1,2)
+vectorizer = CountVectorizer(ngram_range=ngram_range,analyzer='word',stop_words=final_stopwords_list,preprocessor=preprocessPerso)
+BOW3 = vectorizer.fit_transform(alltxts)
+
+\end{lstlisting}
+
+
+\begin{center}
+\includegraphics[scale=0.5]{bow3.png}
+\end{center}
+\subsection{Quatrième bog}
+On utilise la racinisation avant construction du bog. 
+\begin{lstlisting}
+nlp = spacy.load("fr_core_news_sm", disable=["parser", "ner"]) 
+
+def lemmatisation(text, stopwords):
+    text = preprocessPerso(text)
+    doc = nlp(text.lower())
+    # Lemmatiser uniquement les mots qui ne sont pas des stopwords
+    lemmatized = [token.lemma_ for token in doc if token.text not in stopwords]
+    text = " ".join(lemmatized).strip()
+    #on supprime les espaces surnuméraires créés par la racinisation
+    text = re.sub(r'\s+', ' ', text)
+    return text
+
+# Pré-traiter tous les textes
+alltxts_lemmatise = []
+for text in alltxts:
+    alltxts_lemmatise.append(lemmatisation(text, final_stopwords_list))
+    
+\end{lstlisting}
+
+Le résultat est très probant comme le montre l'exemple ci-dessous (1$^{ère}$ phrase du débat avant et après racinisation) :
+
+\begin{verbatim}
+C'est toujours très émouvant de venir en Afrique car c'est probablement 
+l'une des rares terres du monde où l'on ait conservé cette convivialité, 
+cette amitié, ce respect de l'autre qui s'expriment avec chaleur, avec spontanéité 
+et qui réchauffent le coeur de ceux qui arrivent et de ceux qui reçoivent.
+
+-------------------------------
+être toujours tre emouver venir afrique car être probablement rare terre avoir
+conserve convivialite amitie respect autre exprimer chaleur spontaneite rechauffer 
+coeur celui arriver celui recoiver
+\end{verbatim}
+Taille du vocabulaire =  19049
+
+On note que, sans surprise, les auxiliaires être et avoir arrivent en tête des mots les plus fréquents. Il convient peut-être de les ajouter aux mots blancs.
+
+\begin{center}
+\includegraphics[scale=0.5]{bow4.png}
+\end{center}
+\subsection{Cinquième bog}
+On conjugue bigrammes et racinisation. Taille du vocabulaire =  328573
+\begin{lstlisting}
+ngram_range = (1,2) # unigrams and bigrams
+vectorizer = CountVectorizer(ngram_range=ngram_range,analyzer='word',\
+stop_words=final_stopwords_list,preprocessor=preprocessPerso) # Maybe 2-grams or 3-grams bring improvements ?
+BOW5 = vectorizer.fit_transform(alltxts_lemm)
+\end{lstlisting}
+\begin{center}
+\includegraphics[scale=0.5]{bow5.png}
+\end{center}
+
+On note que les mots les plus fréquents sont des mnogrammes.
+
+\subsection{Sixième bog}
+On travaille avec un bog binaire. Taille du vocabulaire =  10000
+\begin{lstlisting}
+min_df=5
+max_df=0.5
+max_features=10000
+vectorizer = CountVectorizer(max_df=max_df,min_df=min_df,max_features=max_features,\
+binary=True,stop_words=final_stopwords_list) #try out some values
+BOW6 = vectorizer.fit_transform(alltxts)
+\end{lstlisting}
+\begin{center}
+\includegraphics[scale=0.5]{bow6.png}
+\end{center}
+
+
+\subsection{Septième bog}
+On applique une racinisation avant un TF-IDF. Taille du vocabulaire = 4000
+\begin{lstlisting}
+use_idf=True
+smooth_idf=True
+sublinear_tf=False
+final_stopwords_list += ["avoir","être"]
+vectorizer = TfidfVectorizer(use_idf= use_idf, smooth_idf=smooth_idf, sublinear_tf=sublinear_tf,\
+                            stop_words=final_stopwords_list,max_features=4000)
+BOW7 = vectorizer.fit_transform(alltxts_lemm)
+\end{lstlisting}
+
+\subsection{Huitième bog}
+On applique une racinisation avant un TF-IDF sur des bigrammes. Taille du vocabulaire = 4000
+\begin{lstlisting}
+use_idf=True
+smooth_idf=True
+sublinear_tf=False
+final_stopwords_list += ["avoir","être"]
+vectorizer = TfidfVectorizer(use_idf= use_idf, smooth_idf=smooth_idf, sublinear_tf=sublinear_tf,\
+                            stop_words=final_stopwords_list,max_features=4000)
+BOW7 = vectorizer.fit_transform(alltxts_lemm)
+\end{lstlisting}
+
+\section{Classificateurs}
+
+\section{Métriques}
+Je me suis aperçu, en séparant les données par locuteur en 2 corpus distincts, que M.Chirac a beaucoup plus parlé que M.Mitterrand lors de ce débat. 
+
+\begin{lstlisting}
+corpus1 = [alltxts[i] for i in range(len(alltxts)) if alllabs[i]==1] #Chirac
+corpus2 = [alltxts[i] for i in range(len(alltxts)) if alllabs[i]==-1] #Mitterand
+
+#Taille des corpus
+print("------------------Taille des corpus-----------------------")
+print("Chirac:",len(corpus1))
+print("Mitterrand",len(corpus2))
+\end{lstlisting}
+
+\begin{verbatim}
+------------------Taille des corpus-----------------------
+Chirac: 49890
+Mitterrand 7523
+\end{verbatim}
+
+Ceci a une influence considérable sur l'entrainement et les prédictions des différents modéles. La métrique de la précision, très bonne quelque soit le bog utilisé, n'est plus pertinente.
+
+\end{document}
