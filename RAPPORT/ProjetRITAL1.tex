@@ -40,7 +40,7 @@
 
 \def\nomEtudA{Nils Barrellon 21401602}
 
-\def\titreProjetLong{RITAL : Chirac ou Mitterand ?}
+\def\titreProjetLong{RITAL : Chirac ou Mitterrand ? Comm' positif ou négatif ?}
 
 \def\typeDoc{Rapport final}
  
@@ -154,21 +154,23 @@ inputencoding=utf8,
 
 \section{Formulation du problème}
 
-Chirac ou Mitterrand : on dispose de la transcription d'un débat entre les deux présidents de la République, MM Chirac et Mitterrand. Chaque phrase prononcée par l'un ou l'autre est labellisée. On attribue le label M pour celles proposées par M.Mitterrand que l'on convertit en -1 et le label C (converti en 1) si c'est M.Chirac qui parle. 
+\underline{Chirac ou Mitterrand} : on dispose de la transcription d'un débat entre les deux présidents de la République, MM Chirac et Mitterrand. Chaque phrase prononcée par l'un ou l'autre est labellisée. On attribue le label M pour celles proposées par M.Mitterrand que l'on convertit en -1 et le label C (converti en 1) si c'est M.Chirac qui parle. 
 
 Les phrases labellisées de ce débat constitueront donc les données d'entraînement.
 
-L'objectif du projet est de pouvoir attribuer à son auteur une phrase quelconque prononcée dans un autre contexte.
+L'objectif du projet est de pouvoir attribuer à son auteur une phrase quelconque prononcée dans un autre contexte : on parle de \textbf{diarisation du locuteur}.\\
 
+\underline{Commentaire positif ou négatif} : la dataset est constituée d'une banque de commentaires autour de différents films. L'objectif est de décider si tel ou tel commentaire est un commentaire positif ou négatif : on parle ici d'\textbf{analyse de sentiment}. 
 
+\section{Etude du problème de diarisation du locuteur}
 
-\section{Bag of words}
+\subsection{Bag of words}
 
-On crée différents bag of words (bog) pour nos documents afin d'en tester la pertinence.
+On crée différents bag of words (\textit{bog}) pour nos documents afin d'en tester la pertinence.
+%------------------------------------------------------------------------------------------
+\subsubsection{Pré-processing}
 
-\subsection{Pré-processing}
-
-On effectue en maont de la construction du bog un nettoyage du texte. Les options retenues sont :
+On effectue en amont de la construction du \textit{bog} un nettoyage du texte. Les options retenues sont :
 \begin{itemize}
 \item suppression de la ponctuation ;
 \item suppression des chiffres ;
@@ -196,9 +198,9 @@ def preprocessPerso(text):
     #mise en minuscule
     return text.lower()
 \end{lstlisting}
-
-\subsection{Stopwords}
-On supprime les mots blancs avant construction du bog. La liste des stopwords est obtenue par concaténation des stopwords français donnés par la bibliothèque nltk auxquels on ajoute une liste personnelle, établie à partir de la liste des mots les plus présents et non-discriminants.
+%------------------------------------------------------------------------------------------
+\subsubsection{Stopwords}
+On supprime les mots blancs avant construction du \textit{bog}. La liste des stopwords est obtenue par concaténation des stopwords français donnés par la bibliothèque \texttt{nltk} auxquels on ajoute une liste personnelle, établie à partir de la liste des mots les plus présents et non-discriminants.
 
 \begin{lstlisting}
 # Mots blancs + mots les plus fréquents
@@ -231,29 +233,30 @@ vectorizer = TfidfVectorizer(preprocessor=preprocessPerso,use_idf= use_idf, smoo
 BOW1 = vectorizer.fit_transform(alltxts)
 vocabulaire = vectorizer.get_feature_names_out()
 \end{lstlisting} 
-
-\subsection{Premier bog}
+%------------------------------------------------------------------------------------------
+\subsubsection{Premier bog}
 
 Bag of words simple. Taille du vocabulaire =  26894
 \begin{lstlisting}
-vectorizer = CountVectorizer(stop_words=final_stopwords_list,analyzer="word", preprocessor=preprocessPerso)
-BOW1 = vectorizer.fit_transform(alltxts)
+vectorizer1 = CountVectorizer(stop_words=final_stopwords_list,analyzer="word", preprocessor=preprocessPerso)
+BOW1 = vectorizer1.fit_transform(alltxts)
 \end{lstlisting}
 
 
 \begin{center}
 \includegraphics[scale=0.5]{bow1.png}
 \end{center}
-\subsection{Deuxième bog}
+%------------------------------------------------------------------------------------------
+\subsubsection{Deuxième bog}
 Utilisation de TF-IDF. Nombre de mots du vocabulaire: 2000
 \begin{lstlisting}
 use_idf=True
 smooth_idf=True
 sublinear_tf=False
 
-vectorizer = TfidfVectorizer(use_idf= use_idf, smooth_idf=smooth_idf,\
+vectorizer2 = TfidfVectorizer(use_idf= use_idf, smooth_idf=smooth_idf,\
 sublinear_tf=sublinear_tf,                      preprocessor=preprocessPerso,stop_words=final_stopwords_list,max_features=2000)
-BOW2 = vectorizer.fit_transform(alltxts)
+BOW2 = vectorizer2.fit_transform(alltxts)
 
 \end{lstlisting}
 
@@ -261,12 +264,13 @@ BOW2 = vectorizer.fit_transform(alltxts)
 \begin{center}
 \includegraphics[scale=0.5]{bow2.png}
 \end{center}
-\subsection{Troisième bog}
+%------------------------------------------------------------------------------------------
+\subsubsection{Troisième bog}
 Utilisation des bigrammes. Taille du vocabulaire =  328573
 \begin{lstlisting}
 ngram_range = (1,2)
-vectorizer = CountVectorizer(ngram_range=ngram_range,analyzer='word',stop_words=final_stopwords_list,preprocessor=preprocessPerso)
-BOW3 = vectorizer.fit_transform(alltxts)
+vectorizer3 = CountVectorizer(ngram_range=ngram_range,analyzer='word',stop_words=final_stopwords_list,preprocessor=preprocessPerso)
+BOW3 = vectorizer3.fit_transform(alltxts)
 
 \end{lstlisting}
 
@@ -274,8 +278,9 @@ BOW3 = vectorizer.fit_transform(alltxts)
 \begin{center}
 \includegraphics[scale=0.5]{bow3.png}
 \end{center}
-\subsection{Quatrième bog}
-On utilise la racinisation avant construction du bog. 
+%------------------------------------------------------------------------------------------
+\subsubsection{Quatrième bog}
+On utilise la racinisation avant construction du \textit{bog}. 
 \begin{lstlisting}
 nlp = spacy.load("fr_core_news_sm", disable=["parser", "ner"]) 
 
@@ -309,69 +314,76 @@ et qui réchauffent le coeur de ceux qui arrivent et de ceux qui reçoivent.
 conserve convivialite amitie respect autre exprimer chaleur spontaneite rechauffer 
 coeur celui arriver celui recoiver
 \end{verbatim}
-Taille du vocabulaire =  19049
+Taille du vocabulaire =  19049\\
 
-On note que, sans surprise, les auxiliaires être et avoir arrivent en tête des mots les plus fréquents. Il convient peut-être de les ajouter aux mots blancs.
+On note que, sans surprise, les auxiliaires \textbf{être} et \textbf{avoir} arrivent en tête des mots les plus fréquents. Il convient donc de les ajouter aux mots blancs.
+
+\underline{A noter:} ce processus de racinisation est très long et j'ai donc sauvegardé le vocabulaire obtenu pour ne pas avoir à le recalculer à chaque fois. 
+
+\begin{lstlisting}
+with open("corpus_nettoye_lemmatise.txt","w",encoding="utf-8") as f:
+    for i in range(len(alltxts_lemmatise)):
+        f.write(alltxts_lemmatise[i])
+        f.write("\n")
+\end{lstlisting}
 
 \begin{center}
 \includegraphics[scale=0.5]{bow4.png}
 \end{center}
-\subsection{Cinquième bog}
-On conjugue bigrammes et racinisation. Taille du vocabulaire =  328573
+%------------------------------------------------------------------------------------------
+\subsubsection{Cinquième bog}
+On conjugue bigrammes et racinisation. Taille du vocabulaire =  345610
 \begin{lstlisting}
-ngram_range = (1,2) # unigrams and bigrams
-vectorizer = CountVectorizer(ngram_range=ngram_range,analyzer='word',\
-stop_words=final_stopwords_list,preprocessor=preprocessPerso) # Maybe 2-grams or 3-grams bring improvements ?
-BOW5 = vectorizer.fit_transform(alltxts_lemm)
+ngram_range = (1,2) 
+final_stopwords_list += ['avoir',"être"]
+vectorizer5 = CountVectorizer(ngram_range=ngram_range,analyzer='word',\
+stop_words=final_stopwords_list,preprocessor=preprocessPerso) 
+BOW5 = vectorizer5.fit_transform(alltxts_lemmatise)
 \end{lstlisting}
 \begin{center}
 \includegraphics[scale=0.5]{bow5.png}
 \end{center}
 
-On note que les mots les plus fréquents sont des mnogrammes.
-
-\subsection{Sixième bog}
+On note que les mots les plus fréquents sont des monogrammes.
+%------------------------------------------------------------------------------------------
+\subsubsection{Sixième bog}
 On travaille avec un bog binaire. Taille du vocabulaire =  10000
 \begin{lstlisting}
 min_df=5
 max_df=0.5
 max_features=10000
-vectorizer = CountVectorizer(max_df=max_df,min_df=min_df,max_features=max_features,\
-binary=True,stop_words=final_stopwords_list) #try out some values
-BOW6 = vectorizer.fit_transform(alltxts)
+vectorizer6 = CountVectorizer(max_df=max_df,min_df=min_df,max_features=max_features,\
+binary=True,stop_words=final_stopwords_list) 
+BOW6 = vectorizer6.fit_transform(alltxts)
 \end{lstlisting}
 \begin{center}
 \includegraphics[scale=0.5]{bow6.png}
 \end{center}
 
-
-\subsection{Septième bog}
+%------------------------------------------------------------------------------------------
+\subsubsection{Septième bog}
 On applique une racinisation avant un TF-IDF. Taille du vocabulaire = 4000
 \begin{lstlisting}
 use_idf=True
 smooth_idf=True
 sublinear_tf=False
-final_stopwords_list += ["avoir","être"]
-vectorizer = TfidfVectorizer(use_idf= use_idf, smooth_idf=smooth_idf, sublinear_tf=sublinear_tf,\
+vectorizer7 = TfidfVectorizer(use_idf= use_idf, smooth_idf=smooth_idf, sublinear_tf=sublinear_tf,\
                             stop_words=final_stopwords_list,max_features=4000)
-BOW7 = vectorizer.fit_transform(alltxts_lemm)
+BOW7 = vectorizer7.fit_transform(alltxts_lemmatise)
 \end{lstlisting}
-
-\subsection{Huitième bog}
+%------------------------------------------------------------------------------------------
+\subsubsection{Huitième bog}
 On applique une racinisation avant un TF-IDF sur des bigrammes. Taille du vocabulaire = 4000
 \begin{lstlisting}
 use_idf=True
 smooth_idf=True
 sublinear_tf=False
-final_stopwords_list += ["avoir","être"]
-vectorizer = TfidfVectorizer(use_idf= use_idf, smooth_idf=smooth_idf, sublinear_tf=sublinear_tf,\
+vectorizer8 = TfidfVectorizer(use_idf= use_idf, smooth_idf=smooth_idf, sublinear_tf=sublinear_tf,\
                             stop_words=final_stopwords_list,max_features=4000)
-BOW7 = vectorizer.fit_transform(alltxts_lemm)
+BOW8 = vectorizer8.fit_transform(alltxts_lemmatise)
 \end{lstlisting}
 
-\section{Classificateurs}
-
-\section{Métriques}
+\subsubsection{Neuvième bog}
 Je me suis aperçu, en séparant les données par locuteur en 2 corpus distincts, que M.Chirac a beaucoup plus parlé que M.Mitterrand lors de ce débat. 
 
 \begin{lstlisting}
@@ -390,6 +402,101 @@ Chirac: 49890
 Mitterrand 7523
 \end{verbatim}
 
-Ceci a une influence considérable sur l'entrainement et les prédictions des différents modéles. La métrique de la précision, très bonne quelque soit le bog utilisé, n'est plus pertinente.
+Ceci a une influence considérable sur l'entrainement et les prédictions des différents modéles. La métrique de la précision, très bonne quelque soit le \textit{bog} utilisé, n'est plus pertinente. \\ 
+
+D'autre part, il m'a semblé pertinent de ré-équilibrer les données. J'ai donc créé un neuvième \textit{bog} en ramenant le nombre d'interventions de M.Chirac à un nombre égal à celui de M.Mitterrand. 
+
+\begin{lstlisting}
+corpus1 = [(alltxts_lemm[i],alllabs[i]) for i in range(len(alltxts)) if alllabs[i]==1] #Chirac
+corpus2 = [(alltxts_lemm[i],alllabs[i]) for i in range(len(alltxts)) if alllabs[i]==-1] #Mitterand
+
+corpus = corpus2+corpus1[:len(corpus1)//6]
+new_alltxts = [c[0] for c in corpus]
+new_labels = [[c[1] for c in corpus]]
+
+ngram_range = (1,2) # unigrams and bigrams
+
+use_idf=True
+smooth_idf=True
+sublinear_tf=False
+
+vectorizer9 = TfidfVectorizer(ngram_range=ngram_range,analyzer="word",use_idf= use_idf, smooth_idf=smooth_idf, sublinear_tf=sublinear_tf,\
+                            stop_words=final_stopwords_list,max_features=5000)
+BOW9 = vectorizer9.fit_transform(new_alltxts)
+\end{lstlisting}
+
+Taille du vocabulaire = 5000
+
+\begin{center}
+\includegraphics[scale=0.5]{bow9.png}
+\end{center}
+%------------------------------------------------------------------------------------------
+\section{Classificateurs}
+
+On va appliquer trois méthodes de classification sur les différents \textit{bog} :
+\begin{itemize}
+\item Naïve Bayes
+\item Regression logique
+\item SVD
+\end{itemize}
+
+La méthode \textbf{Naïve Bayes} applique le théorème de Bayes en supposant que les mots sont indépendants entre eux (d'où le "naïf"). Pour un texte, il calcule la probabilité que chaque mot appartienne à chaque classe, puis multiplie ces probabilités pour classer le document. \\
+
+
+La \textbf{régression logistique} modélise la probabilité d'appartenir à une classe via une fonction sigmoïde appliquée à une combinaison linéaire des mots. C'est un modèle linéaire qui une frontière de décision droite entre les classes. \\
+
+La méthode \textbf{SVM pour Support Vector Machine} cherche l'hyperplan qui sépare les classes avec la marge maximale entre les points les plus proches de chaque classe (les vecteurs de support). Grâce à l'astuce du kernel, il peut projeter les données dans un espace de dimension supérieure pour séparer des classes non linéairement séparables. 
+
+\section{Métriques}
+
+J'ai testé les 3 méthodes de classification sur chacun des \textit{bog} et mesuré 3 métriques différentes sur les données test : la précision, le rappel et le f1-score. La figure montre de plus le temps d'exécution des 3 modèles pour chaque \textit{bog}.
+\begin{center}
+\includegraphics[scale=0.5]{bow_comparaison.png}
+\end{center}
+ 
+Le ré-équilibrage des données semble mener à un résultat de meilleure qualité. J'ai donc testé ce \textit{bog} pour ma première soumission de données sur la plateforme.
+
+Voici le script que j'ai utilisé pour générer mon fichier de résultats :
+
+\begin{lstlisting}
+#Choix du bog
+vectorizer = vectorizer9 
+
+#Application du BOG sur les données à tester
+test_nouvelles_phrases = vectorizer.transform(nouvelles_phrases)
+
+X_train = BOW9
+y_train = new_labels #alllabs si BOG != BOG9 (plus petit)
+
+#Choix du modèle
+model = LogisticRegression(random_state=0, solver='liblinear', max_iter=100, tol=1e-8, C=100.0)
+
+# Entrainement le modèle
+model.fit(X_train, y_train)
+
+#appliquer le même BOW sur les phrases mystère
+
+probabilites = model.predict_proba(test_nouvelles_phrases)[:, 1]  # Probabilité classe "Chirac"
+
+# Créer un DataFrame avec les probabilités
+df = pd.DataFrame({
+    "phrase": nouvelles_phrases,
+    "probabilite_chirac": probabilites
+})
+
+# Écrire dans un fichier CSV
+df.to_csv("probabilites_chirac.csv", index=False, header=False,columns=["probabilite_chirac"])
+\end{lstlisting}
+
+Cette première soumission m'a rendu les métriques suivantes :
+\begin{itemize}
+\item f1 =35.052
+\item auc = 70.976
+\item ap = 29.524
+\end{itemize}
+
+Ces résultats m'ont énormément surpris puisque très différents de ceux obtenus sur les données test. J'ai donc cru que je m'étais trompé de probabilité et ai soumis un nouveau fichier csv contenant \texttt{1-proba}. Les résultats étaient pires. Comment expliquer ces mauvais scores ?
+
+J'ai dans l'idée que la normalisation était inadaptée : la racinisation pourrait bien avoir supprimé des informations utiles. J'ai donc soumis les données obtenues avec le premier \textit{bog}.
 
 \end{document}
