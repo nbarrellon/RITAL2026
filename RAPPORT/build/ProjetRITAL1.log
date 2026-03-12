@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023/Debian) (preloaded format=pdflatex 2025.6.6)  3 MAR 2026 19:15
+This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023/Debian) (preloaded format=pdflatex 2025.6.6)  12 MAR 2026 11:49
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1409,7 +1409,7 @@ Package fancyhdr Warning: \footskip is too small (34.1433pt):
 [12 <./bow_comparaison.png>]
 File: LOGO_SCIENCES_DEF_CMJN_med.jpg Graphic file (type jpg)
 <use LOGO_SCIENCES_DEF_CMJN_med.jpg>
-Package pdftex.def Info: LOGO_SCIENCES_DEF_CMJN_med.jpg  used on input line 502
+Package pdftex.def Info: LOGO_SCIENCES_DEF_CMJN_med.jpg  used on input line 511
 .
 (pdftex.def)             Requested size: 85.35826pt x 34.23097pt.
 
@@ -1418,7 +1418,63 @@ Package fancyhdr Warning: \footskip is too small (34.1433pt):
 (fancyhdr)                Make it at least 38.73102pt, for example:
 (fancyhdr)                \setlength{\footskip}{38.73102pt}.
 
-[13] (build/ProjetRITAL1.aux)
+[13]
+File: LOGO_SCIENCES_DEF_CMJN_med.jpg Graphic file (type jpg)
+<use LOGO_SCIENCES_DEF_CMJN_med.jpg>
+Package pdftex.def Info: LOGO_SCIENCES_DEF_CMJN_med.jpg  used on input line 551
+.
+(pdftex.def)             Requested size: 85.35826pt x 34.23097pt.
+
+
+Package fancyhdr Warning: \footskip is too small (34.1433pt): 
+(fancyhdr)                Make it at least 38.73102pt, for example:
+(fancyhdr)                \setlength{\footskip}{38.73102pt}.
+
+[14]
+<matrice_conf1.png, id=344, 754.82pt x 573.14125pt>
+File: matrice_conf1.png Graphic file (type png)
+<use matrice_conf1.png>
+Package pdftex.def Info: matrice_conf1.png  used on input line 557.
+(pdftex.def)             Requested size: 301.92265pt x 229.25243pt.
+<matrice_conf2.png, id=345, 754.82pt x 573.14125pt>
+File: matrice_conf2.png Graphic file (type png)
+<use matrice_conf2.png>
+Package pdftex.def Info: matrice_conf2.png  used on input line 563.
+(pdftex.def)             Requested size: 301.92265pt x 229.25243pt.
+<matrice_conf3.png, id=346, 752.8125pt x 540.0175pt>
+File: matrice_conf3.png Graphic file (type png)
+<use matrice_conf3.png>
+Package pdftex.def Info: matrice_conf3.png  used on input line 569.
+(pdftex.def)             Requested size: 301.11966pt x 216.00316pt.
+File: LOGO_SCIENCES_DEF_CMJN_med.jpg Graphic file (type jpg)
+<use LOGO_SCIENCES_DEF_CMJN_med.jpg>
+Package pdftex.def Info: LOGO_SCIENCES_DEF_CMJN_med.jpg  used on input line 570
+.
+(pdftex.def)             Requested size: 85.35826pt x 34.23097pt.
+
+
+Package fancyhdr Warning: \footskip is too small (34.1433pt): 
+(fancyhdr)                Make it at least 38.73102pt, for example:
+(fancyhdr)                \setlength{\footskip}{38.73102pt}.
+
+[15 <./matrice_conf1.png> <./matrice_conf2.png>]
+<matrice_conf4.png, id=356, 753.81625pt x 570.13pt>
+File: matrice_conf4.png Graphic file (type png)
+<use matrice_conf4.png>
+Package pdftex.def Info: matrice_conf4.png  used on input line 575.
+(pdftex.def)             Requested size: 301.52116pt x 228.04796pt.
+File: LOGO_SCIENCES_DEF_CMJN_med.jpg Graphic file (type jpg)
+<use LOGO_SCIENCES_DEF_CMJN_med.jpg>
+Package pdftex.def Info: LOGO_SCIENCES_DEF_CMJN_med.jpg  used on input line 577
+.
+(pdftex.def)             Requested size: 85.35826pt x 34.23097pt.
+
+
+Package fancyhdr Warning: \footskip is too small (34.1433pt): 
+(fancyhdr)                Make it at least 38.73102pt, for example:
+(fancyhdr)                \setlength{\footskip}{38.73102pt}.
+
+[16 <./matrice_conf3.png> <./matrice_conf4.png>] (build/ProjetRITAL1.aux)
  ***********
 LaTeX2e <2023-11-01> patch level 1
 L3 programming layer <2024-01-22>
@@ -1430,10 +1486,10 @@ Package logreq Info: Writing requests to 'ProjetRITAL1.run.xml'.
 
  ) 
 Here is how much of TeX's memory you used:
- 33379 strings out of 474222
- 628259 string characters out of 5748734
+ 33460 strings out of 474222
+ 629659 string characters out of 5748734
  2332975 words of memory out of 5000000
- 54966 multiletter control sequences out of 15000+600000
+ 55017 multiletter control sequences out of 15000+600000
  570356 words of font info for 62 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  84i,15n,87p,685b,2215s stack positions out of 10000i,1000n,20000p,200000b,200000s
@@ -1441,10 +1497,10 @@ Here is how much of TeX's memory you used:
 share/texmf/fonts/type1/public/cm-super/sfbbx10.pfb></usr/share/texmf/fonts/typ
 e1/public/cm-super/sfbmo10.pfb></usr/share/texmf/fonts/type1/public/cm-super/sf
 bmr10.pfb></usr/share/texmf/fonts/type1/public/cm-super/sfbtl10.pfb>
-Output written on build/ProjetRITAL1.pdf (13 pages, 2761147 bytes).
+Output written on build/ProjetRITAL1.pdf (16 pages, 2924778 bytes).
 PDF statistics:
- 385 PDF objects out of 1000 (max. 8388607)
- 336 compressed objects within 4 object streams
- 191 named destinations out of 1000 (max. 500000)
- 191 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 440 PDF objects out of 1000 (max. 8388607)
+ 380 compressed objects within 4 object streams
+ 221 named destinations out of 1000 (max. 500000)
+ 211 words of extra memory for PDF output out of 10000 (max. 10000000)
 

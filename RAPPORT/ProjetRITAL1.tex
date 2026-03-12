@@ -166,11 +166,11 @@ L'objectif du projet est de pouvoir attribuer à son auteur une phrase quelconqu
 
 \subsection{Bag of words}
 
-On crée différents bag of words (\textit{bog}) pour nos documents afin d'en tester la pertinence.
+J'ai créé différents bag of words (\textit{bog}) pour les documents afin d'en tester la pertinence.
 %------------------------------------------------------------------------------------------
 \subsubsection{Pré-processing}
 
-On effectue en amont de la construction du \textit{bog} un nettoyage du texte. Les options retenues sont :
+J'effectue en amont de la construction du \textit{bog} un nettoyage du texte. Les options retenues sont :
 \begin{itemize}
 \item suppression de la ponctuation ;
 \item suppression des chiffres ;
@@ -178,7 +178,7 @@ On effectue en amont de la construction du \textit{bog} un nettoyage du texte. L
 
 \end{itemize} 
 
-Ce nettoyage est opéré par la fonction personnalisée de pré-processing suivante :
+Ce nettoyage est opéré par ma fonction personnalisée de pré-processing suivante :
 
 \begin{lstlisting}
 import codecs
@@ -200,7 +200,7 @@ def preprocessPerso(text):
 \end{lstlisting}
 %------------------------------------------------------------------------------------------
 \subsubsection{Stopwords}
-On supprime les mots blancs avant construction du \textit{bog}. La liste des stopwords est obtenue par concaténation des stopwords français donnés par la bibliothèque \texttt{nltk} auxquels on ajoute une liste personnelle, établie à partir de la liste des mots les plus présents et non-discriminants.
+Je supprime les mots blancs avant construction du \textit{bog}. La liste des stopwords est obtenue par concaténation des stopwords français donnés par la bibliothèque \texttt{nltk} auxquels j'ajoute une liste personnelle, établie à partir de la liste des mots les plus présents et non-discriminants.
 
 \begin{lstlisting}
 # Mots blancs + mots les plus fréquents
@@ -316,7 +316,7 @@ coeur celui arriver celui recoiver
 \end{verbatim}
 Taille du vocabulaire =  19049\\
 
-On note que, sans surprise, les auxiliaires \textbf{être} et \textbf{avoir} arrivent en tête des mots les plus fréquents. Il convient donc de les ajouter aux mots blancs.
+Je note que, sans surprise, les auxiliaires \textbf{être} et \textbf{avoir} arrivent en tête des mots les plus fréquents. Je décide donc de les ajouter aux mots blancs.
 
 \underline{A noter:} ce processus de racinisation est très long et j'ai donc sauvegardé le vocabulaire obtenu pour ne pas avoir à le recalculer à chaque fois. 
 
@@ -332,7 +332,7 @@ with open("corpus_nettoye_lemmatise.txt","w",encoding="utf-8") as f:
 \end{center}
 %------------------------------------------------------------------------------------------
 \subsubsection{Cinquième bog}
-On conjugue bigrammes et racinisation. Taille du vocabulaire =  345610
+Je conjugue bigrammes et racinisation. Taille du vocabulaire =  345610
 \begin{lstlisting}
 ngram_range = (1,2) 
 final_stopwords_list += ['avoir',"être"]
@@ -344,10 +344,10 @@ BOW5 = vectorizer5.fit_transform(alltxts_lemmatise)
 \includegraphics[scale=0.5]{bow5.png}
 \end{center}
 
-On note que les mots les plus fréquents sont des monogrammes.
+Je note que les mots les plus fréquents sont des monogrammes.
 %------------------------------------------------------------------------------------------
 \subsubsection{Sixième bog}
-On travaille avec un bog binaire. Taille du vocabulaire =  10000
+Je construis un bog binaire. Taille du vocabulaire =  10000
 \begin{lstlisting}
 min_df=5
 max_df=0.5
@@ -362,7 +362,7 @@ BOW6 = vectorizer6.fit_transform(alltxts)
 
 %------------------------------------------------------------------------------------------
 \subsubsection{Septième bog}
-On applique une racinisation avant un TF-IDF. Taille du vocabulaire = 4000
+J'applique une racinisation avant un TF-IDF. Taille du vocabulaire = 4000
 \begin{lstlisting}
 use_idf=True
 smooth_idf=True
@@ -373,7 +373,7 @@ BOW7 = vectorizer7.fit_transform(alltxts_lemmatise)
 \end{lstlisting}
 %------------------------------------------------------------------------------------------
 \subsubsection{Huitième bog}
-On applique une racinisation avant un TF-IDF sur des bigrammes. Taille du vocabulaire = 4000
+J'applique une racinisation avant un TF-IDF sur des bigrammes. Taille du vocabulaire = 4000
 \begin{lstlisting}
 use_idf=True
 smooth_idf=True
@@ -404,7 +404,7 @@ Mitterrand 7523
 
 Ceci a une influence considérable sur l'entrainement et les prédictions des différents modéles. La métrique de la précision, très bonne quelque soit le \textit{bog} utilisé, n'est plus pertinente. \\ 
 
-D'autre part, il m'a semblé pertinent de ré-équilibrer les données. J'ai donc créé un neuvième \textit{bog} en ramenant le nombre d'interventions de M.Chirac à un nombre égal à celui de M.Mitterrand. 
+Il m'a donc semblé pertinent de ré-équilibrer les données. J'ai donc créé un neuvième \textit{bog} en ramenant le nombre d'interventions de M.Chirac à un nombre égal à celui de M.Mitterrand. 
 
 \begin{lstlisting}
 corpus1 = [(alltxts_lemm[i],alllabs[i]) for i in range(len(alltxts)) if alllabs[i]==1] #Chirac
@@ -433,7 +433,7 @@ Taille du vocabulaire = 5000
 %------------------------------------------------------------------------------------------
 \section{Classificateurs}
 
-On va appliquer trois méthodes de classification sur les différents \textit{bog} :
+J'applique trois méthodes de classification sur mes différents \textit{bog} :
 \begin{itemize}
 \item Naïve Bayes
 \item Regression logique
@@ -466,22 +466,22 @@ vectorizer = vectorizer9
 test_nouvelles_phrases = vectorizer.transform(nouvelles_phrases)
 
 X_train = BOW9
-y_train = new_labels #alllabs si BOG != BOG9 (plus petit)
+y_train = new_labels
 
 #Choix du modèle
-model = LogisticRegression(random_state=0, solver='liblinear', max_iter=100, tol=1e-8, C=100.0)
+model = LogisticRegression(random_state=0, solver='liblinear', max_iter=10
+00, tol=1e-8, C=100.0)
 
-# Entrainement le modèle
+# Entrainement du modèle
 model.fit(X_train, y_train)
 
-#appliquer le même BOW sur les phrases mystère
 
 probabilites = model.predict_proba(test_nouvelles_phrases)[:, 1]  # Probabilité classe "Chirac"
 
 # Créer un DataFrame avec les probabilités
 df = pd.DataFrame({
     "phrase": nouvelles_phrases,
-    "probabilite_chirac": probabilites
+    "probabilite_chirac": 1-probabilites #car on veut la proba pour Mitterand
 })
 
 # Écrire dans un fichier CSV
@@ -499,4 +499,79 @@ Ces résultats m'ont énormément surpris puisque très différents de ceux obte
 
 J'ai dans l'idée que la normalisation était inadaptée : la racinisation pourrait bien avoir supprimé des informations utiles. J'ai donc soumis les données obtenues avec le premier \textit{bog}.
 
+Cette deuxième soumission m'a rendu les métriques suivantes :
+\begin{itemize}
+\item f1 =15.463
+\item auc = 29.817
+\item ap = 9.285
+\end{itemize}
+
+Résultats catastrophiques et incompréhensibles. Une nouvelle fois, j'ai pensé avoir inversé les probabilités mais, après avoir soumis les probabilités inversées les résultats n'étaient pas meilleurs.
+
+Je suis donc revenu aux "basiques" pour ma cinquième soumission. J'ai utilisé un \textit{bog} TF-IDF, avec utilisation des stopwords fournis par la bibliothèque \texttt{nltk} avec mon nettoyage en amont personnel.
+
+\begin{lstlisting}
+from nltk.corpus import stopwords
+final_stopwords_list = stopwords.words('french')
+use_idf=True
+smooth_idf=True
+sublinear_tf=False
+
+vectorizer10 = TfidfVectorizer(ngram_range=(1,2),analyzer="word",use_idf= use_idf, smooth_idf=smooth_idf, sublinear_tf=sublinear_tf,\
+                            stop_words=final_stopwords_list,preprocessor=preprocessPerso)
+BOW10 = vectorizer10.fit_transform(alltxts)
+\end{lstlisting}
+
+Cette cinquième soumission m'a rendu les métriques suivantes :
+\begin{itemize}
+\item f1 =56.392
+\item auc = 87.603
+\item ap = 63.694
+\end{itemize}
+
+Résultats meilleurs mais toujours pas satisfaisants. Mon nombre d'essais se rabougrissant comme peau de chagrin, j'ai procédé à une analyse plus poussée en amont de ma prochaine soumission. Notamment en établissant la matrice de confusion de mes prédictions obtenues avec mon dernier \textit{bog}.
+
+
+\begin{lstlisting}
+[X_train, X_test, y_train, y_test]  = train_test_split(BOW10, alllabs, test_size=0.2, shuffle=True)
+
+
+# Entrainement du modèle
+model.fit(X_train, y_train)
+y_pred = model.predict(X_test)
+
+#Convertir les labels en 'N' (négatif) ou 'P' (positif)
+y_pred_labels = ['M' if lbl <0.5 else 'C' for lbl in y_pred]
+y_test_labels = ['M' if lbl==-1 else 'C' for lbl in y_test]
+# Matrice de confusion
+cm = confusion_matrix(y_test_labels, y_pred_labels)
+disp = ConfusionMatrixDisplay(confusion_matrix=cm, display_labels=["Chirac","Mitterrand"])
+disp.plot(cmap=plt.cm.Blues)
+plt.title("Matrice de confusion")
+plt.show()
+
+\end{lstlisting}
+
+J'ai obtenu un résultat surprenant :
+\begin{center}
+\includegraphics[scale=0.4]{matrice_conf1.png}
+\end{center}
+
+Le locuteur Chirac est très bien discriminé. En revanche, l'erreur est la norme pour le locuteur Mitterrand. Ceci allait dans le sens de mes premières observations : M.Chirac a beaucoup plus parlé que M.Mitterrand et le modèle est biaisé.
+Ce qui ressort sur la matrice de confusion, réalisé après ré-équilibrage des données brutes.
+\begin{center}
+\includegraphics[scale=0.4]{matrice_conf2.png}
+\end{center}
+
+J'ai noté une amélioration si je ne restreins pas la taille du vocabulaire...
+
+\begin{center}
+\includegraphics[scale=0.4]{matrice_conf3.png}
+\end{center}
+
+Enfin, j'ai renouvellé l'opération de lemmatisation sur les données ré-équilibrées. La matrice de confusion est légèrement meilleure.
+
+\begin{center}
+\includegraphics[scale=0.4]{matrice_conf4.png}
+\end{center}
 \end{document}
