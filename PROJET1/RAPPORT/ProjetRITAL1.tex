@@ -569,9 +569,37 @@ J'ai noté une amélioration si je ne restreins pas la taille du vocabulaire...
 \includegraphics[scale=0.4]{matrice_conf3.png}
 \end{center}
 
-Enfin, j'ai renouvellé l'opération de lemmatisation sur les données ré-équilibrées. La matrice de confusion est légèrement meilleure.
+Enfin, j'ai renouvelé l'opération de lemmatisation sur les données ré-équilibrées. La matrice de confusion est légèrement meilleure.
 
 \begin{center}
 \includegraphics[scale=0.4]{matrice_conf4.png}
 \end{center}
+
+Mes deux dernières soumissions me renvoient les métriques suivantes (et donc définitives) :
+\begin{itemize}	
+\item f1 =79.030
+\item auc = 96.970
+\item ap = 88.548
+\end{itemize}
+
+\subsection*{5 Discussion sur les résultats obtenus et la méthode utilisée}
+
+Il me semble que la méthode utilisant des \textit{bog} atteint ici ses limites.L'empirisme étant de mise, un nombre de soumissions beaucoup plus importants aurait été intéressant. A fortiori car les tests menés sur les données dont nous disposions renvoyaient des résultats assez divergents de ceux des données test (ce que je ne m'explique pas...). Le ré-équilibrage des données a permis toutefois d'obtenir des résultats un peu plus corrects.\\
+
+Je pense aussi, pour avoir essayé, que nous aurions pu jouer sur le seuil de détection. Fixé ici à 0.5, j'ai obtenu des résultats légèrement meilleurs en abaissant ce seuil. \\
+
+Enfin, j'ai eu du mal à saisir les répercussions du travail sur le vocabulaire. Ce qui paraissait évident (comme la suppression des mots blancs ou la racinisation) n'a pas donné les résultats escomptés.
+
+\section{Etude du problème de l'analyse de sentiments}
+
+Ma démarche a été similaire au problème précédent. Création de \textit{bog}. J'ai soumis les résultats obtenues avec les \textit{bog} suivants -- tous ont été construits sans les stopwords anglais :
+\begin{itemize}
+\item 2-grammes, racinisation et modele SVC;
+\item TF-IDF et 5000 mots de vocabulaire (modèle régression logique);
+\item BOG simple avec 8000 mots de vocabulaire (modèle régression logique) ;
+\item TF-IDF et N-grammes (soumissions n°4 et n°6) (modèle régression logique);
+\item BOG binaire (modèle régression logique).
+\end{itemize}
+
+Les métriques obtenues ont été sensiblement identiques, au delà de 80\%. Les meilleurs résultats ont été obtenues avec ma première soumission ce qui me semble tout à fait logique. Je pense que la racinisation (stemming) a très bien fonctionné avec la langue anglaise et plus particulièrement avec des commentaires de films qui ne sont généralement pas des parangons de littérature.
 \end{document}

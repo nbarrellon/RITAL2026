@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023/Debian) (preloaded format=pdflatex 2025.6.6)  12 MAR 2026 11:49
+This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023/Debian) (preloaded format=pdflatex 2025.6.6)  13 MAR 2026 14:45
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1154,14 +1154,14 @@ LaTeX Font Info:    Trying to load font information for OMS+cmbrs on input line
 (/usr/share/texlive/texmf-dist/tex/latex/cmbright/omscmbrs.fd
 File: omscmbrs.fd 2005/04/13 v8.1 (WaS)
 )
-<wordcloud.png, id=72, 627.34375pt x 439.6425pt>
+<wordcloud.png, id=76, 627.34375pt x 439.6425pt>
 File: wordcloud.png Graphic file (type png)
 <use wordcloud.png>
 Package pdftex.def Info: wordcloud.png  used on input line 147.
 (pdftex.def)             Requested size: 386.95894pt x 271.19359pt.
 LaTeX Font Info:    Font shape `T1/cmbr/b/n' in size <12> not available
 (Font)              Font shape `T1/cmbr/bx/n' tried instead on input line 153.
-<LOGO_SCIENCES_DEF_CMJN_med.jpg, id=74, 142.3719pt x 57.0933pt>
+<LOGO_SCIENCES_DEF_CMJN_med.jpg, id=78, 142.3719pt x 57.0933pt>
 File: LOGO_SCIENCES_DEF_CMJN_med.jpg Graphic file (type jpg)
 <use LOGO_SCIENCES_DEF_CMJN_med.jpg>
 Package pdftex.def Info: LOGO_SCIENCES_DEF_CMJN_med.jpg  used on input line 153
@@ -1221,12 +1221,12 @@ Package fancyhdr Warning: \footskip is too small (34.1433pt):
 (fancyhdr)                \setlength{\footskip}{38.73102pt}.
 
 [3]
-<bow1.png, id=136, 646.415pt x 433.62pt>
+<bow1.png, id=140, 646.415pt x 433.62pt>
 File: bow1.png Graphic file (type png)
 <use bow1.png>
 Package pdftex.def Info: bow1.png  used on input line 247.
 (pdftex.def)             Requested size: 323.20671pt x 216.80946pt.
-<bow2.png, id=137, 646.415pt x 433.62pt>
+<bow2.png, id=141, 646.415pt x 433.62pt>
 File: bow2.png Graphic file (type png)
 <use bow2.png>
 Package pdftex.def Info: bow2.png  used on input line 265.
@@ -1243,7 +1243,7 @@ Package fancyhdr Warning: \footskip is too small (34.1433pt):
 (fancyhdr)                \setlength{\footskip}{38.73102pt}.
 
 [4 <./bow1.png>]
-<bow3.png, id=157, 646.415pt x 433.62pt>
+<bow3.png, id=161, 646.415pt x 433.62pt>
 File: bow3.png Graphic file (type png)
 <use bow3.png>
 Package pdftex.def Info: bow3.png  used on input line 279.
@@ -1287,7 +1287,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 317--318
 
  []
 
-<bow4.png, id=168, 646.415pt x 433.62pt>
+<bow4.png, id=172, 646.415pt x 433.62pt>
 File: bow4.png Graphic file (type png)
 <use bow4.png>
 Package pdftex.def Info: bow4.png  used on input line 331.
@@ -1303,7 +1303,7 @@ Package fancyhdr Warning: \footskip is too small (34.1433pt):
 (fancyhdr)                \setlength{\footskip}{38.73102pt}.
 
 [6]
-<bow5.png, id=196, 646.415pt x 433.62pt>
+<bow5.png, id=200, 646.415pt x 433.62pt>
 File: bow5.png Graphic file (type png)
 <use bow5.png>
 Package pdftex.def Info: bow5.png  used on input line 344.
@@ -1320,7 +1320,7 @@ Package fancyhdr Warning: \footskip is too small (34.1433pt):
 (fancyhdr)                \setlength{\footskip}{38.73102pt}.
 
 [7 <./bow4.png> <./bow5.png>]
-<bow6.png, id=210, 646.415pt x 433.62pt>
+<bow6.png, id=214, 646.415pt x 433.62pt>
 File: bow6.png Graphic file (type png)
 <use bow6.png>
 Package pdftex.def Info: bow6.png  used on input line 360.
@@ -1352,7 +1352,7 @@ Package fancyhdr Warning: \footskip is too small (34.1433pt):
 (fancyhdr)                \setlength{\footskip}{38.73102pt}.
 
 [9]
-<bow9.png, id=259, 637.38126pt x 435.6275pt>
+<bow9.png, id=263, 637.38126pt x 435.6275pt>
 File: bow9.png Graphic file (type png)
 <use bow9.png>
 Package pdftex.def Info: bow9.png  used on input line 431.
@@ -1378,7 +1378,7 @@ Package fancyhdr Warning: \footskip is too small (34.1433pt):
 (fancyhdr)                \setlength{\footskip}{38.73102pt}.
 
 [10 <./bow9.png>]
-<bow_comparaison.png, id=273, 859.5312pt x 994.4352pt>
+<bow_comparaison.png, id=277, 859.5312pt x 994.4352pt>
 File: bow_comparaison.png Graphic file (type png)
 <use bow_comparaison.png>
 Package pdftex.def Info: bow_comparaison.png  used on input line 454.
@@ -1431,17 +1431,17 @@ Package fancyhdr Warning: \footskip is too small (34.1433pt):
 (fancyhdr)                \setlength{\footskip}{38.73102pt}.
 
 [14]
-<matrice_conf1.png, id=344, 754.82pt x 573.14125pt>
+<matrice_conf1.png, id=348, 754.82pt x 573.14125pt>
 File: matrice_conf1.png Graphic file (type png)
 <use matrice_conf1.png>
 Package pdftex.def Info: matrice_conf1.png  used on input line 557.
 (pdftex.def)             Requested size: 301.92265pt x 229.25243pt.
-<matrice_conf2.png, id=345, 754.82pt x 573.14125pt>
+<matrice_conf2.png, id=349, 754.82pt x 573.14125pt>
 File: matrice_conf2.png Graphic file (type png)
 <use matrice_conf2.png>
 Package pdftex.def Info: matrice_conf2.png  used on input line 563.
 (pdftex.def)             Requested size: 301.92265pt x 229.25243pt.
-<matrice_conf3.png, id=346, 752.8125pt x 540.0175pt>
+<matrice_conf3.png, id=350, 752.8125pt x 540.0175pt>
 File: matrice_conf3.png Graphic file (type png)
 <use matrice_conf3.png>
 Package pdftex.def Info: matrice_conf3.png  used on input line 569.
@@ -1458,38 +1458,57 @@ Package fancyhdr Warning: \footskip is too small (34.1433pt):
 (fancyhdr)                \setlength{\footskip}{38.73102pt}.
 
 [15 <./matrice_conf1.png> <./matrice_conf2.png>]
-<matrice_conf4.png, id=356, 753.81625pt x 570.13pt>
+<matrice_conf4.png, id=360, 753.81625pt x 570.13pt>
 File: matrice_conf4.png Graphic file (type png)
 <use matrice_conf4.png>
 Package pdftex.def Info: matrice_conf4.png  used on input line 575.
 (pdftex.def)             Requested size: 301.52116pt x 228.04796pt.
+
+Underfull \hbox (badness 10000) in paragraph at lines 587--588
+
+ []
+
 File: LOGO_SCIENCES_DEF_CMJN_med.jpg Graphic file (type jpg)
 <use LOGO_SCIENCES_DEF_CMJN_med.jpg>
-Package pdftex.def Info: LOGO_SCIENCES_DEF_CMJN_med.jpg  used on input line 577
+Package pdftex.def Info: LOGO_SCIENCES_DEF_CMJN_med.jpg  used on input line 588
 .
 (pdftex.def)             Requested size: 85.35826pt x 34.23097pt.
-
 
 Package fancyhdr Warning: \footskip is too small (34.1433pt): 
 (fancyhdr)                Make it at least 38.73102pt, for example:
 (fancyhdr)                \setlength{\footskip}{38.73102pt}.
 
-[16 <./matrice_conf3.png> <./matrice_conf4.png>] (build/ProjetRITAL1.aux)
+[16 <./matrice_conf3.png> <./matrice_conf4.png>]
+Underfull \hbox (badness 10000) in paragraph at lines 589--590
+
+ []
+
+File: LOGO_SCIENCES_DEF_CMJN_med.jpg Graphic file (type jpg)
+<use LOGO_SCIENCES_DEF_CMJN_med.jpg>
+Package pdftex.def Info: LOGO_SCIENCES_DEF_CMJN_med.jpg  used on input line 605
+.
+(pdftex.def)             Requested size: 85.35826pt x 34.23097pt.
+
+Package fancyhdr Warning: \footskip is too small (34.1433pt): 
+(fancyhdr)                Make it at least 38.73102pt, for example:
+(fancyhdr)                \setlength{\footskip}{38.73102pt}.
+
+[17] (build/ProjetRITAL1.aux)
  ***********
 LaTeX2e <2023-11-01> patch level 1
 L3 programming layer <2024-01-22>
  ***********
 Package rerunfilecheck Info: File `ProjetRITAL1.out' has not changed.
-(rerunfilecheck)             Checksum: D45A1F921ACDEB0166B7CEA0FA422E2E;2243.
+(rerunfilecheck)             Checksum: 591772CBA5CAFAEE798C2ED20869A4F9;2528.
 Package logreq Info: Writing requests to 'ProjetRITAL1.run.xml'.
 \openout1 = `ProjetRITAL1.run.xml'.
 
  ) 
 Here is how much of TeX's memory you used:
- 33460 strings out of 474222
- 629659 string characters out of 5748734
+ 33465 strings out of 474222
+ 629709 string characters out of 5748734
  2332975 words of memory out of 5000000
- 55017 multiletter control sequences out of 15000+600000
+ 55019 multiletter control sequences out of 15000+600000
  570356 words of font info for 62 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  84i,15n,87p,685b,2215s stack positions out of 10000i,1000n,20000p,200000b,200000s
@@ -1497,10 +1516,10 @@ Here is how much of TeX's memory you used:
 share/texmf/fonts/type1/public/cm-super/sfbbx10.pfb></usr/share/texmf/fonts/typ
 e1/public/cm-super/sfbmo10.pfb></usr/share/texmf/fonts/type1/public/cm-super/sf
 bmr10.pfb></usr/share/texmf/fonts/type1/public/cm-super/sfbtl10.pfb>
-Output written on build/ProjetRITAL1.pdf (16 pages, 2924778 bytes).
+Output written on build/ProjetRITAL1.pdf (17 pages, 2927540 bytes).
 PDF statistics:
- 440 PDF objects out of 1000 (max. 8388607)
- 380 compressed objects within 4 object streams
- 221 named destinations out of 1000 (max. 500000)
- 211 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 450 PDF objects out of 1000 (max. 8388607)
+ 389 compressed objects within 4 object streams
+ 224 named destinations out of 1000 (max. 500000)
+ 219 words of extra memory for PDF output out of 10000 (max. 10000000)
 
